@@ -51,6 +51,20 @@ class DateTest {
         assertThrows(NullPointerException.class, () -> Date.parse(null));
     }
 
+    @Test
+    void parseDateWithSlashDDMMYY() throws Exception {
+        // FORMATO DD/MM/YYYY
+        Date expected = new Date(LocalDate.of(2000, 7, 27));
+        assertEquals(Optional.of(expected), Date.parse("27/07/2000"));
+    }
+
+    @Test
+    void parseDateWithSlashYYMMDD() throws Exception {
+        // FORMATO YYYY/MM/DD
+        Date expected = new Date(LocalDate.of(2000, 7, 27));
+        assertEquals(Optional.of(expected), Date.parse("2000/07/27"));
+    }
+
     @ParameterizedTest
     @MethodSource("provideInvalidCornerCaseArguments")
     public void nonExistentDates(String invalidDate, String errorMessage) {

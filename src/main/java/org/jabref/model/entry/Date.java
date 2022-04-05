@@ -1,5 +1,6 @@
 package org.jabref.model.entry;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.YearMonth;
@@ -24,6 +25,7 @@ public class Date {
                 "uuuu-M-d",                             // covers 2009-1-15
                 "uuuu-M",                               // covers 2009-11
                 "d-M-uuuu",                             // covers 15-1-2012
+                // "d/M/uuuu",                             // covers 15/1/2012
                 "M-uuuu",                               // covers 1-2012
                 "M/uuuu",                               // covers 9/2015 and 09/2015
                 "M/uu",                                 // covers 9/15
@@ -96,7 +98,14 @@ public class Date {
             } catch (DateTimeParseException ignored) {
                 return Optional.empty();
             }
+        }
 
+        /*
+            Check for XX/YY/ZZZZ and XXXX/YY/ZZ pattern. Doesn't check for valid
+            dates, like 50/60/9999, since it's already checked on line 112
+        */
+        if (dateString.matches("([0-9]{2}/[0-9]{2}/[0-9]{4})|([0-9]{4}/[0-9]{2}/[0-9]{2})")) {
+            dateString = dateString.replace("/", "-");
         }
 
         try {
